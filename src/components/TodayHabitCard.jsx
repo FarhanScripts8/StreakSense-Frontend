@@ -53,9 +53,14 @@ export default function TodayHabitCard({
       </div>
 
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <div className="font-medium truncate">{habit.name}</div>
           <span className="chip">{habit.category}</span>
+          {streak > 0 && (
+            <span className="sm:hidden inline-flex items-center gap-0.5 text-xs font-semibold text-orange-500">
+              🔥 {streak}
+            </span>
+          )}
         </div>
         {habit.description && (
           <div className="text-sm text-muted truncate mt-0.5">

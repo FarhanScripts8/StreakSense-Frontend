@@ -22,7 +22,7 @@ export default function HabitStatsCard({ stat }) {
           <Trophy size={14} className="text-amber-500" />
           <span className="font-medium">{stat.longestStreak}</span>
         </div>
-        <div className="hidden sm:flex items-center gap-1" title="30-day count">
+        <div className="flex items-center gap-1" title="30-day count">
           <Target size={14} className="text-brand-500" />
           <span className="font-medium">{stat.completions30d}/30</span>
         </div>

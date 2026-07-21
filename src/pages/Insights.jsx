@@ -367,7 +367,7 @@ export default function Insights() {
       </div>
 
       {/* Charts row 1 */}
-      <div className="grid lg:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div className="card p-5">
           <div className="text-sm font-medium mb-3">Completions by day</div>
           <div style={{ width: "100%", height: 240 }}>
@@ -441,7 +441,7 @@ export default function Insights() {
       </div>
 
       {/* Charts row 2 */}
-      <div className="grid lg:grid-cols-[1fr_1.4fr] gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-5">
         <div className="card p-5">
           <div className="text-sm font-medium mb-3">By category</div>
           {!categoryData.length ? (

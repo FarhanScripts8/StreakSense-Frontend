@@ -265,6 +265,17 @@ export default function Habits() {
                       {h.description}
                     </div>
                   )}
+                  <div className="sm:hidden flex items-center gap-3 text-xs text-muted mt-1.5 flex-wrap">
+                    <span className="flex items-center gap-0.5" title="Current streak">
+                      <Flame size={12} className={current > 0 ? "text-orange-500" : "text-faint"} />
+                      <span className="font-medium">{current}</span>
+                    </span>
+                    <span className="flex items-center gap-0.5" title="Longest streak">
+                      <Trophy size={12} className="text-amber-500" />
+                      <span className="font-medium">{longest}</span>
+                    </span>
+                    <span>{keys.length} total</span>
+                  </div>
                 </div>
 
                 <div className="hidden sm:flex items-center gap-4 text-sm">
