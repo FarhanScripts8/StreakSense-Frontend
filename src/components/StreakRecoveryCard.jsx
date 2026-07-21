@@ -10,7 +10,7 @@ export default function StreakRecoveryCard({ habit, onDismiss }) {
   const generate = async () => {
     setLoading(true);
     try {
-      const res = await api.post("/ai/recovery-plan", { habitId: habit._id });
+      const res = await api.post(`/ai/recovery-plan/${habit._id}`);
       setContent(res.data.content);
     } finally {
       setLoading(false);

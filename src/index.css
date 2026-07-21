@@ -293,3 +293,22 @@ body::before { animation: aurora-shift 22s ease-in-out infinite; }
   border-radius: 8px;
 }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-faint); }
+
+.password-input-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.password-input-wrapper .input {
+  padding-right: 2.5rem; /* space for eye button */
+}
+
+.password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #888;
+}

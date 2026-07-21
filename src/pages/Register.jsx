@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { Sparkles, Sun, Moon } from "lucide-react";
+import { Sparkles, Sun, Moon, Eye, EyeOff } from "lucide-react"; // 👈 added Eye, EyeOff
 import { useAuth } from "../context/AuthContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 
@@ -8,21 +8,29 @@ export default function Register() {
   const { user, register } = useAuth();
   const { theme, toggle } = useTheme();
   const navigate = useNavigate();
+
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // 👈 visibility state
 
   if (user) return <Navigate to="/dashboard" replace />;
 
-  const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
+  const set = (k) => (e) =>
+    setForm({
+      ...form,
+      [k]: e.target.value,
+    });
 
   const submit = async (e) => {
     e.preventDefault();
     setErr("");
+
     if (form.password.length < 6) {
       setErr("Password must be at least 6 characters");
       return;
     }
+
     setLoading(true);
     try {
       await register(form.name, form.email, form.password);
@@ -52,7 +60,7 @@ export default function Register() {
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 text-white flex items-center justify-center shadow-lg shadow-brand-500/30">
             <Sparkles size={18} />
           </div>
-          <span className="font-semibold text-lg">AI Habit Tracker</span>
+          <span className="font-semibold text-lg">StreakSense</span>
         </Link>
 
         <div className="card p-7">
@@ -62,6 +70,7 @@ export default function Register() {
           </p>
 
           <form onSubmit={submit} className="mt-6 space-y-4">
+            {/* Name */}
             <div>
               <label className="label">Name</label>
               <input
@@ -73,6 +82,8 @@ export default function Register() {
                 autoFocus
               />
             </div>
+
+            {/* Email */}
             <div>
               <label className="label">Email</label>
               <input
@@ -84,22 +95,42 @@ export default function Register() {
                 required
               />
             </div>
-            <div>
+
+            {/* Password with visibility toggle */}
+            <div className="password-field">
               <label className="label">Password</label>
-              <input
-                className="input"
-                type="password"
-                value={form.password}
-                onChange={set("password")}
-                placeholder="At least 6 characters"
-                required
-              />
+              <div className="password-input-wrapper">
+                <input
+                  className="input"
+                  type={showPassword ? "text" : "password"}
+                  value={form.password}
+                  onChange={set("password")}
+                  placeholder="At least 6 characters"
+                  required
+                />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <EyeOff size={16} />
+                  ) : (
+                    <Eye size={16} />
+                  )}
+                </button>
+              </div>
             </div>
+
+            {/* Error message */}
             {err && (
               <div className="text-sm text-rose-500 bg-rose-500/10 border border-rose-500/20 rounded-lg px-3 py-2">
                 {err}
               </div>
             )}
+
+            {/* Submit */}
             <button
               type="submit"
               className="btn-primary w-full py-3"
@@ -111,7 +142,10 @@ export default function Register() {
 
           <div className="text-center mt-5 text-sm text-soft">
             Already have an account?{" "}
-            <Link to="/login" className="text-brand-600 dark:text-brand-300 font-medium">
+            <Link
+              to="/login"
+              className="text-brand-600 dark:text-brand-300 font-medium"
+            >
               Log in
             </Link>
           </div>

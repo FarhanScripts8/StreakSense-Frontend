@@ -7,22 +7,29 @@ import Markdown from "./Markdown.jsx";
 export default function MorningMotivation() {
   const { user } = useAuth();
   const [content, setContent] = useState("");
-  const [dismissed, setDismissed] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
     if (!user?.morningMotivation) return;
     const today = new Date().toISOString().slice(0, 10);
     const seen = localStorage.getItem("morning-seen");
     if (seen === today) return;
-    setLoading(true);
-    api
-      .get("/ai/morning")
-      .then((res) => {
+
+    const fetchMotivation = async () => {
+      setLoading(true);
+      try {
+        const res = await api.get("/ai/morning-motivation");
         setContent(res.data.content);
         localStorage.setItem("morning-seen", today);
-      })
-      .finally(() => setLoading(false));
+      } catch {
+        // Silently handle error
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMotivation();
   }, [user?.morningMotivation]);
 
   if (!user?.morningMotivation || dismissed || (!content && !loading))
@@ -53,8 +60,8 @@ export default function MorningMotivation() {
             Good morning, {user.name?.split(" ")[0]}
           </div>
           <div className="mt-1 text-sm">
-            {loading ? (
-              "Thinking of something nice to say..."
+            {!content ? (
+              "Good morning! Have a productive day!"
             ) : (
               <Markdown>{content}</Markdown>
             )}

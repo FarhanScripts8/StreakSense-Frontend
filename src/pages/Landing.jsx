@@ -50,7 +50,7 @@ export default function Landing() {
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 text-white flex items-center justify-center shadow-lg shadow-brand-500/30">
             <Sparkles size={18} />
           </div>
-          <span className="font-semibold text-lg">AI Habit Tracker</span>
+          <span className="font-semibold text-lg">StreakSense</span>
         </div>
         <nav className="flex items-center gap-2">
           <button
@@ -237,7 +237,7 @@ export default function Landing() {
       </section>
 
       <footer className="max-w-6xl mx-auto px-6 py-8 text-center text-xs text-faint border-t divider">
-        Built with MERN · AI Habit Tracker © {new Date().getFullYear()}
+        2026 · StreakSense © {new Date().getFullYear()}
       </footer>
     </div>
   );

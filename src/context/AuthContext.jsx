@@ -10,26 +10,25 @@ export const AuthProvider = ({ children }) => {
     const raw = localStorage.getItem("user");
     return raw ? JSON.parse(raw) : null;
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => !!localStorage.getItem("token"));
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-    api
-      .get("/auth/me")
-      .then((res) => {
+    if (!token) return;
+    const verifyToken = async () => {
+      try {
+        const res = await api.get("/auth/me");
         setUser(res.data.user);
         localStorage.setItem("user", JSON.stringify(res.data.user));
-      })
-      .catch(() => {
+      } catch {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         setUser(null);
-      })
-      .finally(() => setLoading(false));
+      } finally {
+        setLoading(false);
+      }
+    };
+    verifyToken();
   }, []);
 
   const login = async (email, password) => {

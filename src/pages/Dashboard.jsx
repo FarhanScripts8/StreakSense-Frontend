@@ -69,6 +69,17 @@ export default function Dashboard() {
       for (const k of Object.keys(byId))
         byId[k] = byId[k].sort().reverse();
       setAllLogsByHabit(byId);
+
+      const dismissed = JSON.parse(
+        localStorage.getItem("recovery-dismissed") || "{}"
+      );
+      for (const h of habitsRes.data) {
+        const s = streakFromKeys(byId[h._id] || []);
+        if (s.longest >= 7 && s.current === 0 && !dismissed[h._id]) {
+          setRecoveryHabit(h);
+          break;
+        }
+      }
     } finally {
       setLoading(false);
     }
@@ -118,23 +129,6 @@ export default function Dashboard() {
     0
   );
   const weekRate = weekTotal ? Math.round((weekDone / weekTotal) * 100) : 0;
-
-  // Recovery candidates — habits whose longest streak was >= 7 and current is 0
-  useEffect(() => {
-    if (recoveryHabit) return;
-    if (!habits.length) return;
-    const dismissed = JSON.parse(
-      localStorage.getItem("recovery-dismissed") || "{}"
-    );
-    for (const h of habits) {
-      const s = streaksById[h._id];
-      if (!s) continue;
-      if (s.longest >= 7 && s.current === 0 && !dismissed[h._id]) {
-        setRecoveryHabit(h);
-        return;
-      }
-    }
-  }, [habits, streaksById, recoveryHabit]);
 
   const toggle = async (habit) => {
     const done = completedToday.has(String(habit._id));
